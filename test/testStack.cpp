@@ -1,19 +1,10 @@
 // For testing run
 // g++ -std=c++23 test/testStack.cpp -o /tmp/testStack && /tmp/testStack
-#include <stdexcept>
-#include <string>
-#include <iostream>
 
 #include "../include/classes/stack.h"
+#include "common.h"
 
 namespace {
-
-void expect(bool condition, const std::string& message) {
-    if (!condition) {
-        throw std::runtime_error(message);
-    }
-}
-
 void test_is_empty_stack_behaves_correctly() {
     Stack<int> stack;
     expect(stack.is_empty(), "new stack should be is_empty");

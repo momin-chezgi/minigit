@@ -1,3 +1,5 @@
+
+// g++ -std=c++23 -Wall -Wextra -Wpedantic test/test_fehrest.cpp -o /tmp/test_fehrest && /tmp/test_fehrest
 #include <stdexcept>
 #include <string>
 

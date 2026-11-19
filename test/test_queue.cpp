@@ -1,5 +1,5 @@
-// For testing run
-// g++ -std=c++23 test/testQueue.cpp -o /tmp/testQueue && /tmp/testQueue
+// To run this test:
+// g++ -std=c++23 test/test_queue.cpp -o /tmp/test_queue && /tmp/test_queue
 
 #include <string>
 

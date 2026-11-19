@@ -1,5 +1,5 @@
-// For testing run
-// g++ -std=c++23 test/testStack.cpp -o /tmp/testStack && /tmp/testStack
+// To run this test:
+// g++ -std=c++23 test/test_stack.cpp -o /tmp/test_stack && /tmp/test_stack
 
 #include "../include/classes/stack.h"
 #include "common.h"

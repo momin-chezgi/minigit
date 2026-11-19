@@ -1,57 +1,60 @@
 
+#pragma once
+
 #include <cstddef>
+#include <iterator>
+#include <vector>
 
-namespace {
-    template<typename T>
-    void merge(T dst[], const T src[], std::size_t first,
-               std::size_t middle, std::size_t last)
-    {
-        std::size_t i = first;
-        std::size_t j = middle;
+namespace merge_sort_detail {
+template <typename RandomIt, typename T>
+void sort(RandomIt values, T* buffer, std::size_t first, std::size_t last) {
+    if (last - first < 2) return;
 
-        for (std::size_t k = first; k < last; ++k) {
-            if (i < middle && (j >= last || src[i] <= src[j])) {
-                dst[k] = src[i++];
-            } else {
-                dst[k] = src[j++];
-            }
+    // Sort both halves, then merge them into the temporary buffer.
+    const std::size_t middle = first + (last - first) / 2;
+    sort(values, buffer, first, middle);
+    sort(values, buffer, middle, last);
+
+    std::size_t left = first;
+    std::size_t right = middle;
+    for (std::size_t out = first; out < last; ++out) {
+        if (left < middle &&
+            (right == last || !(values[right] < values[left]))) {
+            buffer[out] = values[left++];
+        } else {
+            buffer[out] = values[right++];
         }
     }
-
-    template<typename T>
-    void merge_sort_impl(T dst[], T src[], std::size_t first,
-                         std::size_t last)
-    {
-        if (last - first < 2) {
-            return;
-        }
-
-        const std::size_t middle = (first + last) / 2;
-        merge_sort_impl(src, dst, first, middle);
-        merge_sort_impl(src, dst, middle, last);
-
-        merge(dst, src, first, middle, last);
+    // Copy the merged values back into the input range.
+    for (std::size_t i = first; i < last; ++i) {
+        values[i] = buffer[i];
     }
 }
+}  // namespace merge_sort_detail
 
-template<typename T>
-void merge_sort(T A[], std::size_t n)
-{
+// Sorts [first, last) by sorting each half, then merging them together.
+// Requires random-access iterators.
+template <typename RandomIt>
+void merge_sort(RandomIt first, RandomIt last) {
+    using T = typename std::iterator_traits<RandomIt>::value_type;
+    if (first == last) return;
+    const auto length = last - first;
+    const std::size_t n = static_cast<std::size_t>(length);
     if (n < 2) {
         return;
     }
 
-    T* buffer = new T[n];
-    for (std::size_t i = 0; i < n; ++i) {
-        buffer[i] = A[i];
-    }
-
-    merge_sort_impl(A, buffer, 0, n);
-    delete[] buffer;
+    std::vector<T> buffer(n);
+    merge_sort_detail::sort(first, buffer.data(), 0, n);
 }
 
-template<typename T, std::size_t N>
-void merge_sort(T (&A)[N])
-{
+template <typename T>
+void merge_sort(T A[], std::size_t n) {
+    if (n == 0) return;
+    merge_sort(A, A + n);
+}
+
+template <typename T, std::size_t N>
+void merge_sort(T (&A)[N]) {
     merge_sort(A, N);
 }

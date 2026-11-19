@@ -13,6 +13,9 @@ private:
     std::unique_ptr<T[]> arr;
 
 public:
+    using iterator = T*;
+    using const_iterator = const T*;
+
     explicit Fehrest(std::size_t n = 0)
         : count(n), arr(std::make_unique<T[]>(n)) {}
 
@@ -47,12 +50,8 @@ public:
 
     ~Fehrest() = default;
 
-    std::unique_ptr<T[]> clone() const {
-        auto copy = std::make_unique<T[]>(count);
-        for (std::size_t i = 0; i < count; ++i) {
-            copy[i] = arr[i];
-        }
-        return copy;
+    Fehrest clone() const {
+        return *this;
     }
 
     void randomize() {
@@ -81,4 +80,29 @@ public:
     std::size_t size() const noexcept {
         return count;
     }
+
+    iterator begin() noexcept {
+        return arr.get();
+    }
+
+    const_iterator begin() const noexcept {
+        return arr.get();
+    }
+
+    const_iterator cbegin() const noexcept {
+        return arr.get();
+    }
+
+    iterator end() noexcept {
+        return count == 0 ? arr.get() : arr.get() + count;
+    }
+
+    const_iterator end() const noexcept {
+        return count == 0 ? arr.get() : arr.get() + count;
+    }
+
+    const_iterator cend() const noexcept {
+        return count == 0 ? arr.get() : arr.get() + count;
+    }
+
 };

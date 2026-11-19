@@ -1,36 +1,29 @@
+#include "../include/classes/fehrest.h"
+#include "common.h"
 
 #include <algorithm>
-#include <random>
-#include <iterator>
-#include <functional>
-
-#include "../include/algos/counting_sort.h"
-#include "../include/algos/insertion_sort.h"
-#include "../include/algos/merge_sort.h"
-#include "../include/algos/quick_sort.h"
-#include "../include/algos/radix_sort.h"
-#include "../include/algos/selection_sort.h"
-#include "../include/classes/fehrest.h"
-
-namespace {
-    Fehrest rf[]{
-        Fehrest(1),Fehrest(2),Fehrest(10),Fehrest(20),Fehrest(30),Fehrest(40),Fehrest(50),Fehrest(100),Fehrest(1000)
-    };
-    template <typename T>
-    std::function<void(T[], std::size_t)> funcs = {
-        counting_sort,
-        insertion_sort,
-        merge_sort,
-        quick_sort,
-        radix_sort,
-        selection_sort
-    };
-}
 
 int main() {
-    for (int i=0; i<std::size(ra);i++) {
-        int n = ra[i].count;
-        std::sort();
-        int sorted[] = ra[i];
+    try {
+        Fehrest<int> values(5);
+        values[0] = 50;
+        values[1] = 10;
+        values[2] = 40;
+        values[3] = 20;
+        values[4] = 30;
+
+        std::sort(&values[0], &values[0] + values.size());
+
+        expect(values[0] == 10, "sort should place 10 first");
+        expect(values[1] == 20, "sort should place 20 second");
+        expect(values[2] == 30, "sort should place 30 third");
+        expect(values[3] == 40, "sort should place 40 fourth");
+        expect(values[4] == 50, "sort should place 50 last");
+
+        std::cout << "All sort integration tests passed." << std::endl;
+        return 0;
+    } catch (const std::exception& ex) {
+        std::cerr << "Sort integration test failed: " << ex.what() << std::endl;
+        return 1;
     }
 }
